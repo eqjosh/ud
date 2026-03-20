@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>University of Dubuque — SEI Assessment Analysis</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#f8fafc;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#0f172a}
+.wrap{max-width:960px;margin:0 auto;padding:24px}
+h1{font-size:22px;font-weight:700}
+h2{font-size:16px;font-weight:700;margin-bottom:4px}
+.subtitle{color:#64748b;font-size:14px;margin:6px 0 0}
+.byline{font-size:12px;color:#94a3b8;margin-bottom:20px}
+.byline a{color:#2563eb;text-decoration:none}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat{background:#fff;border-radius:10px;padding:16px 18px;border:1px solid #e2e8f0}
+.stat-label{font-size:11px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.stat-val{font-size:26px;font-weight:700;margin-top:4px}
+.stat-sub{font-size:12px;color:#94a3b8;margin-top:2px}
+.tabs{display:flex;gap:4px;margin-bottom:20px;background:#fff;border-radius:10px;padding:4px;border:1px solid #e2e8f0}
+.tab{flex:1;padding:10px 16px;border-radius:8px;border:none;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s;background:transparent;color:#64748b;font-family:inherit}
+.tab.active{background:#2563eb;color:#fff}
+.card{background:#fff;border-radius:12px;padding:24px;border:1px solid #e2e8f0;margin-bottom:16px}
+.card p{font-size:13px;color:#64748b;margin:0 0 20px}
+.section{display:none}.section.active{display:block}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.bar-label{width:135px;font-size:12px;text-align:right;flex-shrink:0}
+.bar-track{flex:1;height:20px;background:#f1f5f9;border-radius:4px;position:relative;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .4s}
+.bar-val{width:40px;font-size:12px;font-weight:600;color:#334155;text-align:right;flex-shrink:0}
+.bar-p{width:48px;font-size:11px;color:#64748b;flex-shrink:0}
+svg text{font-family:'Inter',-apple-system,sans-serif}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px;font-size:12px;color:#475569}
+.legend-dot{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:middle}
+.insight{margin-top:20px;padding:16px;background:#fffbeb;border-radius:8px;border:1px solid #fde68a}
+.insight-title{font-size:13px;font-weight:600;color:#92400e;margin-bottom:6px}
+.insight-body{font-size:13px;color:#78350f;line-height:1.6}
+.r2-box{margin-bottom:16px;padding:10px 14px;background:#f5f3ff;border-radius:8px;font-size:13px}
+.outcome-tabs{display:flex;gap:4px;margin-bottom:20px;background:#f1f5f9;border-radius:8px;padding:3px}
+.outcome-tab{flex:1;padding:8px 12px;border-radius:6px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:all .15s;background:transparent;color:#64748b;font-family:inherit}
+.outcome-tab.active{background:#7c3aed;color:#fff}
+.footer{margin-top:20px;padding:16px;background:#fff;border-radius:10px;border:1px solid #e2e8f0;font-size:12px;color:#94a3b8;line-height:1.6}
+.footer strong{color:#64748b}
+.tooltip{position:absolute;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;font-size:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);pointer-events:none;z-index:10;white-space:nowrap;display:none}
+.chart-container{position:relative}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div style="margin-bottom:8px">
+    <h1>University of Dubuque &mdash; SEI Assessment Analysis</h1>
+    <p class="subtitle">Personal Empowerment Course vs. Control Group &middot; Six Seconds Emotional Intelligence Assessment &middot; 2021&ndash;2025</p>
+  </div>
+  <div class="byline">Analysis by <a href="https://www.6seconds.org">Six Seconds</a> &middot; Data: 468 matched PE pairs, 394 matched control pairs</div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-label">Total EQ Gain (PE)</div><div class="stat-val" style="color:#2563eb">+3.92</div><div class="stat-sub">p &lt; .001</div></div>
+    <div class="stat"><div class="stat-label">Control EQ Change</div><div class="stat-val" style="color:#94a3b8">+0.26</div><div class="stat-sub">not significant</div></div>
+    <div class="stat"><div class="stat-label">Effect Size (d)</div><div class="stat-val" style="color:#7c3aed">0.49</div><div class="stat-sub">medium effect</div></div>
+    <div class="stat"><div class="stat-label">Years of Data</div><div class="stat-val" style="color:#059669">5</div><div class="stat-sub">2021 through 2025</div></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('overview',this)">Pre/Post Overview</button>
+    <button class="tab" onclick="showTab('trends',this)">Year-over-Year Trends</button>
+    <button class="tab" onclick="showTab('predictors',this)">Outcome Predictors</button>
+  </div>
+
+  <!-- ─── OVERVIEW ──────────────────────────────── -->
+  <div id="overview" class="section active">
+    <div class="card">
+      <h2>Pre &rarr; Post Change Scores</h2>
+      <p>Mean change in SEI scores (paired pre/post). All PE vs Control differences significant at p &lt; .01 or better.</p>
+      <div class="legend">
+        <span><span class="legend-dot" style="background:#2563eb"></span>PE Course</span>
+        <span><span class="legend-dot" style="background:#94a3b8"></span>Control</span>
+      </div>
+      <div id="change-chart"></div>
+    </div>
+    <div class="card">
+      <h2>Effect Sizes (Cohen&rsquo;s d) &mdash; PE Advantage over Control</h2>
+      <div id="effect-chart" style="margin-top:16px"></div>
+      <div style="margin-top:14px;font-size:11px;color:#94a3b8">Cohen&rsquo;s d: 0.2 = small &middot; 0.5 = medium &middot; 0.8 = large</div>
+    </div>
+  </div>
+
+  <!-- ─── TRENDS ────────────────────────────────── -->
+  <div id="trends" class="section">
+    <div class="card">
+      <h2>Total EQ Gain by Year</h2>
+      <p>Consistent PE advantage every year. 2024 was the strongest; 2025 data is partial (n=55 PE, n=22 control).</p>
+      <div class="legend">
+        <span><span class="legend-dot" style="background:#2563eb"></span>PE Course</span>
+        <span><span class="legend-dot" style="background:#94a3b8"></span>Control</span>
+      </div>
+      <div id="yearly-eq-chart" class="chart-container"></div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:11px;color:#94a3b8">
+        <span>2021: PE n=125, Ctrl n=126</span><span>2022: PE n=111, Ctrl n=106</span><span>2023: PE n=87, Ctrl n=80</span><span>2024: PE n=90, Ctrl n=60</span><span>2025: PE n=55, Ctrl n=22</span>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Competency Gains Over Time (PE Course)</h2>
+      <p>Know Yourself competencies consistently lead. Empathy (dashed) is the most volatile.</p>
+      <div id="comp-legend" class="legend" style="font-size:11px"></div>
+      <div id="comp-trend-chart" class="chart-container"></div>
+    </div>
+    <div class="card">
+      <h2>Life Outcomes Over Time: PE vs Control</h2>
+      <p>PE students improve while control students decline &mdash; especially Wellbeing. 2024 was a standout.</p>
+      <div id="outcome-legend" class="legend" style="font-size:11px"></div>
+      <div id="outcome-trend-chart" class="chart-container"></div>
+    </div>
+  </div>
+
+  <!-- ─── PREDICTORS ────────────────────────────── -->
+  <div id="predictors" class="section">
+    <div class="card">
+      <h2>Which Competencies Predict Each Outcome?</h2>
+      <p>Standardized regression coefficients (&beta;) from PE student pre-test data (n=655). Larger bars = stronger unique predictive power.</p>
+      <div class="outcome-tabs">
+        <button class="outcome-tab active" onclick="showOutcome('Effectiveness',this)">Effectiveness</button>
+        <button class="outcome-tab" onclick="showOutcome('Relationship',this)">Relationship</button>
+        <button class="outcome-tab" onclick="showOutcome('Quality of Life',this)">Quality of Life</button>
+        <button class="outcome-tab" onclick="showOutcome('Wellbeing',this)">Wellbeing</button>
+      </div>
+      <div id="r2-box" class="r2-box"></div>
+      <div id="regression-chart"></div>
+      <div class="insight">
+        <div class="insight-title">Key Insight</div>
+        <div class="insight-body">Across all four outcomes, <strong>Exercise Optimism</strong>, <strong>Intrinsic Motivation</strong>, and <strong>Noble Goals</strong> are consistently the strongest predictors &mdash; yet the course produces its largest gains in Emotional Literacy and Recognize Patterns (the self-awareness competencies). This suggests an opportunity to strengthen the Choose/Give Yourself curriculum components to maximize downstream impact on student life outcomes.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <strong>Methodology:</strong> Pre/post pairs matched by student name within academic year (avg ~90 days between assessments). Statistical tests: independent samples t-test for PE vs Control change scores; paired t-test for within-group pre&rarr;post. Regression: OLS with standardized predictors on PE pre-test data (n=655). Effect sizes reported as Cohen&rsquo;s d. All competency and outcome differences between PE and Control significant at p&nbsp;&lt;&nbsp;.01 or better. 2025 data is partial (spring post-tests and fall cohorts still incoming).
+  </div>
+</div>
+
+<script>
+/* ─── DATA ─────────────────────────────────────────── */
+var OVERALL = [
+  {name:"Total EQ",pe:3.92,ctrl:0.26,d:0.49,cat:"total",p:"<.001"},
+  {name:"Emot. Literacy",pe:6.41,ctrl:0.73,d:0.46,cat:"comp",p:"<.001"},
+  {name:"Recog. Patterns",pe:5.69,ctrl:1.34,d:0.37,cat:"comp",p:"<.001"},
+  {name:"Conseq. Thinking",pe:5.21,ctrl:1.05,d:0.37,cat:"comp",p:"<.001"},
+  {name:"Noble Goals",pe:4.28,ctrl:1.10,d:0.27,cat:"comp",p:"<.001"},
+  {name:"Exercise Optimism",pe:3.53,ctrl:0.01,d:0.33,cat:"comp",p:"<.001"},
+  {name:"Nav. Emotions",pe:2.46,ctrl:0.26,d:0.21,cat:"comp",p:".002"},
+  {name:"Intrinsic Motiv.",pe:2.28,ctrl:-0.38,d:0.26,cat:"comp",p:"<.001"},
+  {name:"Empathy",pe:0.69,ctrl:-1.94,d:0.22,cat:"comp",p:".001"},
+  {name:"Effectiveness",pe:4.01,ctrl:0.56,d:0.36,cat:"outcome",p:"<.001"},
+  {name:"Relationship",pe:2.35,ctrl:0.23,d:0.23,cat:"outcome",p:"<.001"},
+  {name:"Quality of Life",pe:1.60,ctrl:-1.45,d:0.30,cat:"outcome",p:"<.001"},
+  {name:"Wellbeing",pe:0.96,ctrl:-1.69,d:0.30,cat:"outcome",p:"<.001"}
+];
+
+var YEARLY_EQ = [
+  {year:"2021",pe:4.25,ctrl:1.09},
+  {year:"2022",pe:3.74,ctrl:-0.48},
+  {year:"2023",pe:3.47,ctrl:0.26},
+  {year:"2024",pe:5.06,ctrl:-0.13},
+  {year:"2025",pe:2.35,ctrl:0.18}
+];
+
+var COMP_KEYS = ["Emot. Literacy","Recog. Patterns","Conseq. Thinking","Nav. Emotions","Intrinsic Motiv.","Exercise Optimism","Empathy","Noble Goals"];
+var COMP_COLORS = ["#6366f1","#8b5cf6","#a855f7","#d946ef","#ec4899","#f43f5e","#f97316","#eab308"];
+var YEARLY_COMP = [
+  [2021,6.00,5.74,6.35,3.21,1.37,3.00,2.65,4.41],
+  [2022,5.66,6.79,4.07,2.69,2.50,2.27,-0.17,4.65],
+  [2023,7.07,4.22,4.06,2.45,2.53,3.92,-0.10,3.53],
+  [2024,7.76,7.02,7.47,3.07,3.40,6.05,2.09,4.00],
+  [2025,5.60,3.53,3.07,-0.67,1.65,2.58,-3.10,4.89]
+];
+
+var OUTCOME_LINES = [
+  {key:"pe_eff",label:"PE: Effectiveness",color:"#2563eb",dash:false},
+  {key:"pe_rel",label:"PE: Relationship",color:"#7c3aed",dash:false},
+  {key:"pe_qol",label:"PE: Quality of Life",color:"#059669",dash:false},
+  {key:"pe_well",label:"PE: Wellbeing",color:"#0891b2",dash:false},
+  {key:"ctrl_eff",label:"Ctrl: Effectiveness",color:"#93c5fd",dash:true},
+  {key:"ctrl_rel",label:"Ctrl: Relationship",color:"#c4b5fd",dash:true},
+  {key:"ctrl_qol",label:"Ctrl: Quality of Life",color:"#86efac",dash:true},
+  {key:"ctrl_well",label:"Ctrl: Wellbeing",color:"#67e8f9",dash:true}
+];
+var YEARLY_OUTCOMES = [
+  {year:"2021",pe_eff:4.36,pe_rel:2.55,pe_qol:1.79,pe_well:-0.26,ctrl_eff:1.46,ctrl_rel:0.59,ctrl_qol:-0.56,ctrl_well:-1.31},
+  {year:"2022",pe_eff:3.97,pe_rel:1.31,pe_qol:0.63,pe_well:0.50,ctrl_eff:-0.84,ctrl_rel:-0.60,ctrl_qol:-2.31,ctrl_well:-1.06},
+  {year:"2023",pe_eff:2.23,pe_rel:2.27,pe_qol:0.45,pe_well:0.23,ctrl_eff:1.36,ctrl_rel:0.66,ctrl_qol:-1.50,ctrl_well:-2.60},
+  {year:"2024",pe_eff:5.44,pe_rel:3.24,pe_qol:3.22,pe_well:3.81,ctrl_eff:-0.10,ctrl_rel:0.35,ctrl_qol:-1.32,ctrl_well:-2.32},
+  {year:"2025",pe_eff:3.79,pe_rel:2.67,pe_qol:2.30,pe_well:1.15,ctrl_eff:0.57,ctrl_rel:-0.69,ctrl_qol:-0.22,ctrl_well:-1.35}
+];
+
+var REGRESSION = {
+  "Effectiveness":{r2:0.531,betas:[
+    {name:"Exercise Optimism",b:0.317},{name:"Noble Goals",b:0.237},{name:"Emot. Literacy",b:0.113},
+    {name:"Recog. Patterns",b:0.106},{name:"Intrinsic Motiv.",b:0.106},{name:"Conseq. Thinking",b:0.066},
+    {name:"Nav. Emotions",b:0.064},{name:"Empathy",b:-0.052}
+  ]},
+  "Relationship":{r2:0.294,betas:[
+    {name:"Exercise Optimism",b:0.163},{name:"Intrinsic Motiv.",b:0.162},{name:"Empathy",b:0.121},
+    {name:"Noble Goals",b:0.100},{name:"Conseq. Thinking",b:0.084},{name:"Emot. Literacy",b:0.066},
+    {name:"Recog. Patterns",b:0.052},{name:"Nav. Emotions",b:0.024}
+  ]},
+  "Quality of Life":{r2:0.415,betas:[
+    {name:"Intrinsic Motiv.",b:0.303},{name:"Exercise Optimism",b:0.198},{name:"Noble Goals",b:0.157},
+    {name:"Nav. Emotions",b:-0.085},{name:"Emot. Literacy",b:0.076},{name:"Empathy",b:0.065},
+    {name:"Recog. Patterns",b:0.043},{name:"Conseq. Thinking",b:0.027}
+  ]},
+  "Wellbeing":{r2:0.223,betas:[
+    {name:"Intrinsic Motiv.",b:0.189},{name:"Exercise Optimism",b:0.179},{name:"Noble Goals",b:0.114},
+    {name:"Emot. Literacy",b:0.053},{name:"Recog. Patterns",b:0.049},{name:"Empathy",b:0.047},
+    {name:"Nav. Emotions",b:-0.038},{name:"Conseq. Thinking",b:-0.024}
+  ]}
+};
+
+/* ─── CHART HELPERS ────────────────────────────────── */
+function fmt(v){return v>0?"+"+v.toFixed(2):v.toFixed(2);}
+
+function buildHBarPair(container,data,valKeyA,valKeyB,colorA,colorB,nameKey,minV,maxV){
+  var el=document.getElementById(container);
+  var range=maxV-minV;
+  var html="";
+  data.forEach(function(d){
+    var a=d[valKeyA],b=d[valKeyB];
+    var labelColor=d.cat==="total"?"#0f172a":d.cat==="outcome"?"#7c3aed":"#334155";
+    var labelWeight=d.cat==="total"?"700":"400";
+    var zeroX=(-minV/range*100);
+    // PE bar
+    var aW=Math.abs(a)/range*100;
+    var aLeft=a>=0?zeroX:zeroX-Math.abs(a)/range*100;
+    // Ctrl bar
+    var bW=Math.abs(b)/range*100;
+    var bLeft=b>=0?zeroX:zeroX-Math.abs(b)/range*100;
+
+    html+='<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">';
+    html+='<div style="width:135px;font-size:12px;text-align:right;font-weight:'+labelWeight+';color:'+labelColor+';flex-shrink:0">'+d[nameKey]+'</div>';
+    html+='<div style="flex:1;height:28px;background:#f8fafc;border-radius:4px;position:relative;border:1px solid #f1f5f9">';
+    // zero line
+    html+='<div style="position:absolute;left:'+zeroX+'%;top:0;bottom:0;width:1px;background:#cbd5e1"></div>';
+    // PE bar (top half)
+    html+='<div style="position:absolute;top:2px;height:11px;left:'+aLeft+'%;width:'+aW+'%;background:'+colorA+';border-radius:2px"></div>';
+    // Ctrl bar (bottom half)
+    html+='<div style="position:absolute;top:15px;height:11px;left:'+bLeft+'%;width:'+bW+'%;background:'+colorB+';border-radius:2px"></div>';
+    html+='</div>';
+    html+='<div style="width:80px;font-size:11px;color:#475569;flex-shrink:0;text-align:right">'+fmt(a)+' / '+fmt(b)+'</div>';
+    html+='</div>';
+  });
+  el.innerHTML=html;
+}
+
+function buildEffectBars(container,data){
+  var el=document.getElementById(container);
+  var html="";
+  data.forEach(function(d){
+    var pct=Math.min(d.d/0.55*100,100);
+    var bg=d.d>=0.4?"#2563eb":d.d>=0.3?"#3b82f6":d.d>=0.2?"#60a5fa":"#93c5fd";
+    var labelColor=d.cat==="total"?"#0f172a":d.cat==="outcome"?"#7c3aed":"#475569";
+    var labelWeight=d.cat==="total"?"700":"400";
+    html+='<div class="bar-row">';
+    html+='<div class="bar-label" style="font-weight:'+labelWeight+';color:'+labelColor+'">'+d.name+'</div>';
+    html+='<div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+bg+'"></div></div>';
+    html+='<div class="bar-val">'+d.d.toFixed(2)+'</div>';
+    html+='<div class="bar-p">p'+d.p+'</div>';
+    html+='</div>';
+  });
+  el.innerHTML=html;
+}
+
+function svgLineChart(container,datasets,years,yMin,yMax,W,H){
+  var el=document.getElementById(container);
+  var pad={l:45,r:15,t:15,b:30};
+  var cw=W-pad.l-pad.r, ch=H-pad.t-pad.b;
+  var xStep=cw/(years.length-1);
+  function xPos(i){return pad.l+i*xStep;}
+  function yPos(v){return pad.t+ch-(v-yMin)/(yMax-yMin)*ch;}
+
+  var svg='<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;max-width:'+W+'px">';
+  // grid
+  var gridSteps=Math.round((yMax-yMin)/2);
+  for(var g=yMin;g<=yMax;g+=2){
+    var gy=yPos(g);
+    svg+='<line x1="'+pad.l+'" y1="'+gy+'" x2="'+(W-pad.r)+'" y2="'+gy+'" stroke="#f1f5f9" stroke-width="1"/>';
+    svg+='<text x="'+(pad.l-6)+'" y="'+gy+'" text-anchor="end" fill="#94a3b8" font-size="11" dominant-baseline="central">'+(g>0?"+":"")+g+'</text>';
+  }
+  // zero line
+  var zy=yPos(0);
+  svg+='<line x1="'+pad.l+'" y1="'+zy+'" x2="'+(W-pad.r)+'" y2="'+zy+'" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="4 4"/>';
+  // x labels
+  years.forEach(function(yr,i){
+    svg+='<text x="'+xPos(i)+'" y="'+(H-6)+'" text-anchor="middle" fill="#64748b" font-size="12">'+yr+'</text>';
+  });
+  // lines
+  datasets.forEach(function(ds){
+    var pts=[];
+    ds.values.forEach(function(v,i){if(v!==null)pts.push(xPos(i)+","+yPos(v));});
+    var dashAttr=ds.dash?' stroke-dasharray="6 4"':'';
+    svg+='<polyline points="'+pts.join(" ")+'" fill="none" stroke="'+ds.color+'" stroke-width="'+(ds.dash?1.5:2)+'"'+dashAttr+'/>';
+    ds.values.forEach(function(v,i){
+      if(v!==null) svg+='<circle cx="'+xPos(i)+'" cy="'+yPos(v)+'" r="3.5" fill="'+ds.color+'" stroke="#fff" stroke-width="1.5"/>';
+    });
+  });
+  svg+='</svg>';
+  el.innerHTML=svg;
+}
+
+function svgGroupedBarChart(container,data,keyA,keyB,colorA,colorB,W,H,yMin,yMax){
+  var el=document.getElementById(container);
+  var pad={l:45,r:15,t:15,b:30};
+  var cw=W-pad.l-pad.r, ch=H-pad.t-pad.b;
+  var n=data.length;
+  var groupW=cw/n;
+  var barW=groupW*0.3;
+  var gap=4;
+  function yPos(v){return pad.t+ch-(v-yMin)/(yMax-yMin)*ch;}
+  var zy=yPos(0);
+
+  var svg='<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;max-width:'+W+'px">';
+  // grid
+  for(var g=yMin;g<=yMax;g+=2){
+    var gy=yPos(g);
+    svg+='<line x1="'+pad.l+'" y1="'+gy+'" x2="'+(W-pad.r)+'" y2="'+gy+'" stroke="#f1f5f9" stroke-width="1"/>';
+    svg+='<text x="'+(pad.l-6)+'" y="'+gy+'" text-anchor="end" fill="#94a3b8" font-size="11" dominant-baseline="central">'+(g>0?"+":"")+g+'</text>';
+  }
+  svg+='<line x1="'+pad.l+'" y1="'+zy+'" x2="'+(W-pad.r)+'" y2="'+zy+'" stroke="#cbd5e1" stroke-width="1"/>';
+
+  data.forEach(function(d,i){
+    var cx=pad.l+groupW*i+groupW/2;
+    var aVal=d[keyA], bVal=d[keyB];
+    // bar A
+    var ay=aVal>=0?yPos(aVal):zy;
+    var ah=Math.abs(yPos(aVal)-zy);
+    svg+='<rect x="'+(cx-barW-gap/2)+'" y="'+ay+'" width="'+barW+'" height="'+ah+'" rx="3" fill="'+colorA+'"/>';
+    // bar B
+    var by=bVal>=0?yPos(bVal):zy;
+    var bh=Math.abs(yPos(bVal)-zy);
+    svg+='<rect x="'+(cx+gap/2)+'" y="'+by+'" width="'+barW+'" height="'+bh+'" rx="3" fill="'+colorB+'"/>';
+    // label
+    svg+='<text x="'+cx+'" y="'+(H-6)+'" text-anchor="middle" fill="#64748b" font-size="12">'+d.year+'</text>';
+  });
+  svg+='</svg>';
+  el.innerHTML=svg;
+}
+
+function buildRegressionBars(container,betas){
+  var el=document.getElementById(container);
+  var sorted=betas.slice().sort(function(a,b){return Math.abs(b.b)-Math.abs(a.b);});
+  var maxB=0.35;
+  var html="";
+  sorted.forEach(function(d){
+    var pct=Math.min(Math.abs(d.b)/maxB*100,100);
+    var bg=d.b>=0.15?"#7c3aed":d.b>=0?"#a78bfa":"#f87171";
+    var dir=d.b>=0?"left":"right";
+    html+='<div class="bar-row">';
+    html+='<div class="bar-label">'+d.name+'</div>';
+    html+='<div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+bg+'"></div></div>';
+    html+='<div class="bar-val" style="width:55px">\u03B2 = '+d.b.toFixed(3)+'</div>';
+    html+='</div>';
+  });
+  el.innerHTML=html;
+}
+
+/* ─── TAB SWITCHING ────────────────────────────────── */
+function showTab(id,btn){
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tabs .tab').forEach(function(t){t.classList.remove('active');});
+  btn.classList.add('active');
+}
+
+var currentOutcome="Effectiveness";
+function showOutcome(name,btn){
+  currentOutcome=name;
+  document.querySelectorAll('.outcome-tab').forEach(function(t){t.classList.remove('active');});
+  btn.classList.add('active');
+  renderRegression();
+}
+
+function renderRegression(){
+  var reg=REGRESSION[currentOutcome];
+  document.getElementById('r2-box').innerHTML='<strong style="color:#7c3aed">R\u00B2 = '+reg.r2+'</strong><span style="color:#6b7280;margin-left:8px">\u2014 the 8 competencies explain '+(reg.r2*100).toFixed(0)+'% of variance in '+currentOutcome+'</span>';
+  buildRegressionBars('regression-chart',reg.betas);
+}
+
+/* ─── RENDER ALL ───────────────────────────────────── */
+function renderAll(){
+  // Overview
+  buildHBarPair('change-chart',OVERALL,'pe','ctrl','#2563eb','#94a3b8','name',-4,8);
+  buildEffectBars('effect-chart',OVERALL);
+
+  // Trends: EQ by year
+  svgGroupedBarChart('yearly-eq-chart',YEARLY_EQ,'pe','ctrl','#2563eb','#94a3b8',800,280,-2,6);
+
+  // Trends: Competency lines
+  var compLeg=document.getElementById('comp-legend');
+  compLeg.innerHTML=COMP_KEYS.map(function(k,i){
+    var style=k==="Empathy"?"border-bottom:2px dashed "+COMP_COLORS[i]:"";
+    return '<span><span class="legend-dot" style="background:'+COMP_COLORS[i]+';'+style+'"></span>'+k+'</span>';
+  }).join("");
+
+  var compDS=COMP_KEYS.map(function(k,ki){
+    return {label:k,color:COMP_COLORS[ki],dash:k==="Empathy",values:YEARLY_COMP.map(function(row){return row[ki+1];})};
+  });
+  svgLineChart('comp-trend-chart',compDS,YEARLY_COMP.map(function(r){return r[0];}),-4,9,800,340);
+
+  // Trends: Outcome lines
+  var outLeg=document.getElementById('outcome-legend');
+  outLeg.innerHTML=OUTCOME_LINES.map(function(l){
+    return '<span><span class="legend-dot" style="background:'+l.color+(l.dash?';opacity:.7':'')+'"></span>'+l.label+'</span>';
+  }).join("");
+
+  var outDS=OUTCOME_LINES.map(function(l){
+    return {label:l.label,color:l.color,dash:l.dash,values:YEARLY_OUTCOMES.map(function(d){return d[l.key];})};
+  });
+  svgLineChart('outcome-trend-chart',outDS,YEARLY_OUTCOMES.map(function(d){return d.year;}),-4,7,800,300);
+
+  // Predictors
+  renderRegression();
+}
+
+renderAll();
+</script>
+</body>
+</html>
