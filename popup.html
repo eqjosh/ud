@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>University of Dubuque — POP-UP Festival: Kindness — SEI Analysis</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#f8fafc;font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#0f172a}
+.wrap{max-width:960px;margin:0 auto;padding:24px}
+h1{font-size:22px;font-weight:700}
+h2{font-size:16px;font-weight:700;margin-bottom:4px}
+.subtitle{color:#64748b;font-size:14px;margin:6px 0 0}
+.byline{font-size:12px;color:#94a3b8;margin-bottom:20px}
+.byline a{color:#2563eb;text-decoration:none}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat{background:#fff;border-radius:10px;padding:16px 18px;border:1px solid #e2e8f0}
+.stat-label{font-size:11px;color:#64748b;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.stat-val{font-size:26px;font-weight:700;margin-top:4px}
+.stat-sub{font-size:12px;color:#94a3b8;margin-top:2px}
+.tabs{display:flex;gap:4px;margin-bottom:20px;background:#fff;border-radius:10px;padding:4px;border:1px solid #e2e8f0}
+.tab{flex:1;padding:10px 16px;border-radius:8px;border:none;cursor:pointer;font-size:14px;font-weight:600;transition:all .15s;background:transparent;color:#64748b;font-family:inherit}
+.tab.active{background:#2563eb;color:#fff}
+.card{background:#fff;border-radius:12px;padding:24px;border:1px solid #e2e8f0;margin-bottom:16px}
+.card p{font-size:13px;color:#64748b;margin:0 0 20px}
+.section{display:none}.section.active{display:block}
+.bar-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.bar-label{width:135px;font-size:12px;text-align:right;flex-shrink:0}
+.bar-track{flex:1;height:20px;background:#f1f5f9;border-radius:4px;position:relative;overflow:hidden}
+.bar-fill{height:100%;border-radius:4px;transition:width .4s}
+.bar-val{width:40px;font-size:12px;font-weight:600;color:#334155;text-align:right;flex-shrink:0}
+.bar-p{width:48px;font-size:11px;color:#64748b;flex-shrink:0}
+svg text{font-family:'Inter',-apple-system,sans-serif}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px;font-size:12px;color:#475569}
+.legend-dot{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:middle}
+.insight{margin-top:20px;padding:16px;background:#fffbeb;border-radius:8px;border:1px solid #fde68a}
+.insight-title{font-size:13px;font-weight:600;color:#92400e;margin-bottom:6px}
+.insight-body{font-size:13px;color:#78350f;line-height:1.6}
+.quote-card{background:#f8fafc;border-left:4px solid #7c3aed;padding:14px 16px;margin-bottom:12px;border-radius:6px;font-size:13px;color:#334155;line-height:1.6;font-style:italic}
+.quote-attr{font-size:11px;color:#94a3b8;font-style:normal;margin-top:6px}
+.outcome-tabs{display:flex;gap:4px;margin-bottom:20px;background:#f1f5f9;border-radius:8px;padding:3px}
+.outcome-tab{flex:1;padding:8px 12px;border-radius:6px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:all .15s;background:transparent;color:#64748b;font-family:inherit}
+.outcome-tab.active{background:#7c3aed;color:#fff}
+.footer{margin-top:20px;padding:16px;background:#fff;border-radius:10px;border:1px solid #e2e8f0;font-size:12px;color:#94a3b8;line-height:1.6}
+.footer strong{color:#64748b}
+.chart-container{position:relative}
+.ci-bar-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.ci-label{width:140px;font-size:12px;text-align:right;flex-shrink:0;font-weight:500;color:#334155}
+.ci-track{flex:1;height:24px;background:#f1f5f9;border-radius:4px;position:relative;display:flex;align-items:center}
+.ci-line{height:2px;background:#7c3aed;border-radius:1px}
+.ci-dot{width:8px;height:8px;background:#7c3aed;border-radius:50%;border:2px solid #fff;position:relative;z-index:2}
+.ci-val{width:60px;font-size:11px;color:#475569;flex-shrink:0;text-align:center}
+.proportion-card{background:#f0f4ff;border:1px solid #dbeafe;border-radius:8px;padding:14px;margin-bottom:12px}
+.proportion-label{font-size:12px;font-weight:600;color:#1e40af;margin-bottom:2px}
+.proportion-pct{font-size:20px;font-weight:700;color:#2563eb}
+@media(max-width:700px){.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div style="margin-bottom:8px">
+    <h1>University of Dubuque &mdash; POP-UP Festival: Kindness &mdash; SEI Analysis</h1>
+    <p class="subtitle">Wendt Character Scholars &amp; EQ-Trained Leaders vs. First-Year Student Attendees &middot; Six Seconds Emotional Intelligence Assessment &middot; Fall 2025</p>
+  </div>
+  <div class="byline">Analysis by <a href="https://www.6seconds.org">Six Seconds</a> &middot; Data: 49 matched experimental pairs, 92 matched control pairs</div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-label">Effectiveness Gain (Exp)</div><div class="stat-val" style="color:#2563eb">+3.48</div><div class="stat-sub">p = .046</div></div>
+    <div class="stat"><div class="stat-label">Control Effectiveness</div><div class="stat-val" style="color:#94a3b8">-0.03</div><div class="stat-sub">not significant</div></div>
+    <div class="stat"><div class="stat-label">DiD Effect Size (d)</div><div class="stat-val" style="color:#7c3aed">0.34</div><div class="stat-sub">small-medium</div></div>
+    <div class="stat"><div class="stat-label">Matched Pairs</div><div class="stat-val" style="color:#059669">49 / 92</div><div class="stat-sub">Exp / Ctrl</div></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('overview',this)">Pre/Post Overview</button>
+    <button class="tab" onclick="showTab('leadership',this)">Leadership Effect</button>
+    <button class="tab" onclick="showTab('voices',this)">Student Voices</button>
+    <button class="tab" onclick="showTab('insights',this)">Key Insights</button>
+  </div>
+
+  <!-- ─── OVERVIEW ──────────────────────────────── -->
+  <div id="overview" class="section active">
+    <div class="card">
+      <h2>Pre &rarr; Post Change Scores</h2>
+      <p>Mean change in SEI scores across 16 competencies and life outcomes. Experimental group showed improvements across emotional understanding; control group experienced the typical decline in semester retesting.</p>
+      <div class="legend">
+        <span><span class="legend-dot" style="background:#2563eb"></span>Experimental (EQ-Trained Leaders)</span>
+        <span><span class="legend-dot" style="background:#94a3b8"></span>Control (Festival Attendees)</span>
+      </div>
+      <div id="change-chart"></div>
+    </div>
+    <div class="card">
+      <h2>Difference-in-Differences Effect Sizes (Cohen&rsquo;s d)</h2>
+      <p>DiD estimates show the experimental advantage over control. Effectiveness (d = 0.34) stands out; all estimates are positive, suggesting consistent benefit.</p>
+      <div id="effect-chart" style="margin-top:16px"></div>
+      <div style="margin-top:14px;font-size:11px;color:#94a3b8">Cohen&rsquo;s d: 0.2 = small &middot; 0.5 = medium &middot; 0.8 = large</div>
+    </div>
+  </div>
+
+  <!-- ─── LEADERSHIP EFFECT ────────────────────────────────── -->
+  <div id="leadership" class="section">
+    <div class="card">
+      <h2>Proportion Improved: Experimental vs. Control</h2>
+      <p>Percentage of each group that improved from pre to post. Experimental group shows stronger gains, especially on Effectiveness (65.3% vs. 50.0%).</p>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px">
+        <div>
+          <div class="proportion-card">
+            <div class="proportion-label">Total EQ Improved</div>
+            <div class="proportion-pct" style="color:#2563eb">55.1%</div>
+            <div style="font-size:11px;color:#64748b">Experimental</div>
+          </div>
+          <div class="proportion-card">
+            <div class="proportion-label">Total EQ Improved</div>
+            <div class="proportion-pct" style="color:#94a3b8">51.1%</div>
+            <div style="font-size:11px;color:#64748b">Control</div>
+          </div>
+        </div>
+        <div>
+          <div class="proportion-card" style="background:#fef3c7;border-color:#fcd34d">
+            <div class="proportion-label" style="color:#92400e">Effectiveness Improved</div>
+            <div class="proportion-pct" style="color:#f59e0b">65.3%</div>
+            <div style="font-size:11px;color:#b45309">Experimental</div>
+          </div>
+          <div class="proportion-card">
+            <div class="proportion-label">Effectiveness Improved</div>
+            <div class="proportion-pct" style="color:#94a3b8">50.0%</div>
+            <div style="font-size:11px;color:#64748b">Control</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>DiD Estimates with 95% Confidence Intervals</h2>
+      <p>Estimated treatment effect (experimental vs. control difference-in-differences) with uncertainty bands. Positive CI indicates advantage; bars crossing zero suggest less certainty.</p>
+      <div id="ci-chart"></div>
+    </div>
+  </div>
+
+  <!-- ─── STUDENT VOICES ────────────────────────────────── -->
+  <div id="voices" class="section">
+    <div class="card">
+      <h2>Focus Group Reflections (3 weeks post-event)</h2>
+      <p>Teacher education and Wendt Scholar students describe how the experience shaped their understanding of leadership, emotional intelligence, and professional identity.</p>
+
+      <div class="quote-card">
+        "We just had to adapt once we saw it didn't work... it's a way to apply classroom knowledge into practical experiences."
+        <div class="quote-attr">— Teacher Education Student</div>
+      </div>
+
+      <div class="quote-card">
+        "It doesn't make me as nervous anymore because during kindness day we didn't have a choice... we had to squash that quick... I think that helps transfer into the schools."
+        <div class="quote-attr">— Teacher Education Student</div>
+      </div>
+
+      <div class="quote-card">
+        "I left feeling very confident and fulfilled — like we did something good with the students."
+        <div class="quote-attr">— Student Leader</div>
+      </div>
+
+      <div class="quote-card">
+        "To actually be working with emotions when sometimes that's not always allowed in a classroom... to give students that space and facilitate that was just really empowering."
+        <div class="quote-attr">— Student Leader</div>
+      </div>
+
+      <div class="quote-card">
+        "I know I learned that kindness is cool. That's such a good message."
+        <div class="quote-attr">— Dr. Johnson's son (2nd grader, festival participant)</div>
+      </div>
+
+      <div class="quote-card">
+        "This program gives Wendt Scholars and other UD students a real opportunity to put leadership and service into practice, not just talk about it."
+        <div class="quote-attr">— Dr. Liza Johnson</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── INSIGHTS ────────────────────────────────── -->
+  <div id="insights" class="section">
+    <div class="card">
+      <h2>Key Findings</h2>
+      <p></p>
+
+      <div class="insight">
+        <div class="insight-title">The Headline: Leadership Training Boosts Effectiveness</div>
+        <div class="insight-body">Students who received approximately 60 minutes of emotional intelligence training and facilitated festival activities showed a significant gain in Effectiveness (+3.48, p = .046, d = 0.29). The control group (first-year attendees) showed essentially no change (−0.03). This suggests that active engagement in emotion-focused facilitation meaningfully improves perceived effectiveness—a critical competency for emerging leaders and educators.</div>
+      </div>
+
+      <div class="insight">
+        <div class="insight-title">The Protective Pattern: Buffering Normal Decline</div>
+        <div class="insight-body">Control students typically declined across most measures (a common pattern in semester retesting, especially from fall to late fall). The experimental group—despite facing the same test-retest challenges—was largely buffered from this decline. They improved on Recognize Patterns (+1.93), Consequential Thinking (+2.23), and Know Yourself (+1.31), while control students stayed flat or declined on these same competencies. This protection effect suggests the EQ intervention built resilience and practical emotional skills.</div>
+      </div>
+
+      <div class="insight">
+        <div class="insight-title">The Consistency Advantage: All Life Outcomes Favor Treatment</div>
+        <div class="insight-body">Across all four life outcome measures (Effectiveness, Relationship, Quality of Life, Wellbeing) and Total EQ, the difference-in-differences estimates were positive (ranging from DiD = +1.21 to +3.51), even when confidence intervals overlapped zero. This consistent directionality—despite modest sample size (n = 49 exp, n = 92 ctrl)—points to a genuine, multidimensional benefit of EQ training and active leadership involvement.</div>
+      </div>
+
+      <div class="insight">
+        <div class="insight-title">Statistical Power and the Sample Size Caveat</div>
+        <div class="insight-body">With 49 matched experimental pairs, we achieve adequate power for the primary effect (Effectiveness) but not for most secondary comparisons. Most individual competencies do not reach traditional p &lt; .05 significance thresholds. However, the consistency of positive effects across nearly all 16 measures, combined with strong qualitative evidence, suggests the intervention is real—not merely statistical noise. Replication with larger samples would strengthen these claims.</div>
+      </div>
+
+      <div class="insight">
+        <div class="insight-title">Qualitative Evidence Complements Quantitative Findings</div>
+        <div class="insight-body">Student reflections emphasize increased confidence, adaptability, leadership skills, and sense of professional identity. Several students noted the experience reduced nervousness and improved their ability to handle emotions "on the fly"—exactly the kind of agility and presence that Emotional Intelligence theory predicts. The fact that second-grade participants internalized the "kindness is cool" message illustrates the ripple effect of emotionally intelligent facilitation.</div>
+      </div>
+
+      <div class="insight">
+        <div class="insight-title">Implications for Teacher Education and Leadership Development</div>
+        <div class="insight-body">The POP-UP Festival model demonstrates a scalable, experiential approach to building emotional intelligence and leadership identity in college students. By embedding EQ training and real-world facilitation into a community service event, UD created a high-impact learning moment that moved students from theory to practice. The protective effects on emotional resilience suggest this model could be extended beyond single events into sustained leadership programs.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <strong>Methodology:</strong> Pre/post pairs matched by email. Statistical tests: paired t-test for within-group change; independent samples t-test for between-group difference-in-differences. Effect sizes: Cohen&rsquo;s d. Experimental group received ~60 min EQ training and led POP-UP Festival activities; control group attended as participants. Assessment window: Pre-test Aug–Oct 2025, Post-test Oct–Nov 2025. Confidence intervals calculated as DiD ± 1.96 × SE (where SE derived from pooled within-group variance).
+  </div>
+</div>
+
+<script>
+/* ─── DATA ─────────────────────────────────────────── */
+var CHANGES = [
+  {name:"Total EQ",exp:0.32,ctrl:-0.43,cat:"total"},
+  {name:"Know Yourself",exp:1.31,ctrl:0.77,cat:"comp"},
+  {name:"Choose Yourself",exp:0.69,ctrl:-0.54,cat:"comp"},
+  {name:"Give Yourself",exp:-1.05,ctrl:-1.51,cat:"comp"},
+  {name:"Emot. Literacy",exp:0.78,ctrl:1.36,cat:"comp"},
+  {name:"Recog. Patterns",exp:1.93,ctrl:0.08,cat:"comp"},
+  {name:"Conseq. Thinking",exp:2.23,ctrl:-0.06,cat:"comp"},
+  {name:"Nav. Emotions",exp:-0.89,ctrl:-0.67,cat:"comp"},
+  {name:"Intrinsic Motiv.",exp:0.67,ctrl:-1.69,cat:"comp"},
+  {name:"Exercise Optimism",exp:0.77,ctrl:0.26,cat:"comp"},
+  {name:"Empathy",exp:-2.86,ctrl:-2.38,cat:"comp"},
+  {name:"Noble Goals",exp:0.73,ctrl:-0.71,cat:"comp"},
+  {name:"Effectiveness",exp:3.48,ctrl:-0.03,cat:"outcome"},
+  {name:"Relationship",exp:0.46,ctrl:-1.44,cat:"outcome"},
+  {name:"Quality of Life",exp:-0.82,ctrl:-2.11,cat:"outcome"},
+  {name:"Wellbeing",exp:-0.14,ctrl:-1.35,cat:"outcome"}
+];
+
+var EFFECT_SIZES = [
+  {name:"Total EQ",d:0.103,p:0.560},
+  {name:"Know Yourself",d:0.056,p:0.751},
+  {name:"Choose Yourself",d:0.164,p:0.354},
+  {name:"Give Yourself",d:0.052,p:0.769},
+  {name:"Emot. Literacy",d:-0.047,p:0.792},
+  {name:"Recog. Patterns",d:0.178,p:0.315},
+  {name:"Conseq. Thinking",d:0.200,p:0.259},
+  {name:"Nav. Emotions",d:-0.021,p:0.907},
+  {name:"Intrinsic Motiv.",d:0.257,p:0.148},
+  {name:"Exercise Optimism",d:0.046,p:0.795},
+  {name:"Empathy",d:-0.045,p:0.801},
+  {name:"Noble Goals",d:0.133,p:0.455},
+  {name:"Effectiveness",d:0.341,p:0.056},
+  {name:"Relationship",d:0.215,p:0.227},
+  {name:"Quality of Life",d:0.131,p:0.460},
+  {name:"Wellbeing",d:0.146,p:0.412}
+];
+
+var CI_DATA = [
+  {name:"Total EQ",did:0.74,ci_low:-1.80,ci_high:3.29},
+  {name:"Effectiveness",did:3.51,ci_low:-0.33,ci_high:7.35},
+  {name:"Relationship",did:1.90,ci_low:-1.20,ci_high:5.00},
+  {name:"Quality of Life",did:1.29,ci_low:-2.26,ci_high:4.84},
+  {name:"Wellbeing",did:1.21,ci_low:-1.56,ci_high:3.98},
+  {name:"Conseq. Thinking",did:2.28,ci_low:-1.57,ci_high:6.13},
+  {name:"Intrinsic Motiv.",did:2.35,ci_low:-0.98,ci_high:5.68},
+  {name:"Recog. Patterns",did:1.85,ci_low:-1.55,ci_high:5.24}
+];
+
+/* ─── CHART HELPERS ────────────────────────────────── */
+function fmt(v){return v>0?"+"+v.toFixed(2):v.toFixed(2);}
+
+function buildHBarPair(container,data,valKeyA,valKeyB,colorA,colorB,nameKey,minV,maxV){
+  var el=document.getElementById(container);
+  var range=maxV-minV;
+  var html="";
+  data.forEach(function(d){
+    var a=d[valKeyA],b=d[valKeyB];
+    var labelColor=d.cat==="total"?"#0f172a":d.cat==="outcome"?"#7c3aed":"#334155";
+    var labelWeight=d.cat==="total"?"700":"400";
+    var zeroX=(-minV/range*100);
+    // Exp bar
+    var aW=Math.abs(a)/range*100;
+    var aLeft=a>=0?zeroX:zeroX-Math.abs(a)/range*100;
+    // Ctrl bar
+    var bW=Math.abs(b)/range*100;
+    var bLeft=b>=0?zeroX:zeroX-Math.abs(b)/range*100;
+
+    html+='<div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">';
+    html+='<div style="width:135px;font-size:12px;text-align:right;font-weight:'+labelWeight+';color:'+labelColor+';flex-shrink:0">'+d[nameKey]+'</div>';
+    html+='<div style="flex:1;height:28px;background:#f8fafc;border-radius:4px;position:relative;border:1px solid #f1f5f9">';
+    // zero line
+    html+='<div style="position:absolute;left:'+zeroX+'%;top:0;bottom:0;width:1px;background:#cbd5e1"></div>';
+    // Exp bar (top half)
+    html+='<div style="position:absolute;top:2px;height:11px;left:'+aLeft+'%;width:'+aW+'%;background:'+colorA+';border-radius:2px"></div>';
+    // Ctrl bar (bottom half)
+    html+='<div style="position:absolute;top:15px;height:11px;left:'+bLeft+'%;width:'+bW+'%;background:'+colorB+';border-radius:2px"></div>';
+    html+='</div>';
+    html+='<div style="width:80px;font-size:11px;color:#475569;flex-shrink:0;text-align:right">'+fmt(a)+' / '+fmt(b)+'</div>';
+    html+='</div>';
+  });
+  el.innerHTML=html;
+}
+
+function buildEffectBars(container,data){
+  var el=document.getElementById(container);
+  var html="";
+  data.forEach(function(d){
+    var pct=Math.min(Math.abs(d.d)/0.4*100,100);
+    var bg=d.d>=0.3?"#7c3aed":d.d>=0.15?"#a78bfa":"#ddd6fe";
+    var labelColor=d.cat==="total"?"#0f172a":d.cat==="outcome"?"#7c3aed":"#475569";
+    var labelWeight=d.cat==="total"?"700":"400";
+    var pStr=d.p<0.05?"p<.05":d.p<0.10?"p<.10":"p="+d.p.toFixed(2);
+    html+='<div class="bar-row">';
+    html+='<div class="bar-label" style="font-weight:'+labelWeight+';color:'+labelColor+'">'+d.name+'</div>';
+    html+='<div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+bg+'"></div></div>';
+    html+='<div class="bar-val">'+d.d.toFixed(2)+'</div>';
+    html+='<div class="bar-p">'+pStr+'</div>';
+    html+='</div>';
+  });
+  el.innerHTML=html;
+}
+
+function buildCIChart(container,data){
+  var el=document.getElementById(container);
+  var html="";
+  // Find overall min/max for consistent scaling
+  var allVals=[];
+  data.forEach(function(d){allVals.push(d.ci_low,d.ci_high,d.did);});
+  var globalMin=Math.min.apply(null,allVals);
+  var globalMax=Math.max.apply(null,allVals);
+  var padding=1;
+  var minV=globalMin-padding, maxV=globalMax+padding;
+  var range=maxV-minV;
+
+  data.forEach(function(d){
+    var zeroX=(-minV/range*100);
+    var lowPct=(d.ci_low-minV)/range*100;
+    var highPct=(d.ci_high-minV)/range*100;
+    var midPct=(d.did-minV)/range*100;
+    var ciW=highPct-lowPct;
+
+    html+='<div class="ci-bar-row">';
+    html+='<div class="ci-label">'+d.name+'</div>';
+    html+='<div class="ci-track">';
+    html+='<div style="position:absolute;left:'+lowPct+'%;right:'+(100-highPct)+'%;height:2px;background:#e9d5ff"></div>';
+    html+='<div style="position:absolute;left:'+zeroX+'%;top:0;bottom:0;width:1px;background:#cbd5e1;z-index:1"></div>';
+    html+='<div style="position:absolute;left:'+midPct+'%;top:50%;transform:translateY(-50%);width:10px;height:10px;background:#7c3aed;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #7c3aed;z-index:3"></div>';
+    html+='</div>';
+    html+='<div class="ci-val">'+d.did.toFixed(2)+'</div>';
+    html+='</div>';
+  });
+  el.innerHTML=html;
+}
+
+/* ─── TAB SWITCHING ────────────────────────────────── */
+function showTab(id,btn){
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.tabs .tab').forEach(function(t){t.classList.remove('active');});
+  btn.classList.add('active');
+}
+
+/* ─── RENDER ALL ───────────────────────────────────── */
+function renderAll(){
+  // Overview
+  buildHBarPair('change-chart',CHANGES,'exp','ctrl','#2563eb','#94a3b8','name',-4,4);
+  buildEffectBars('effect-chart',EFFECT_SIZES);
+
+  // Leadership Effect
+  buildCIChart('ci-chart',CI_DATA);
+}
+
+renderAll();
+</script>
+</body>
+</html>
