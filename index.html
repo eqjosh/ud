@@ -64,13 +64,111 @@ svg text{font-family:'Inter',-apple-system,sans-serif}
   </div>
 
   <div class="tabs">
-    <button class="tab active" onclick="showTab('overview',this)">Pre/Post Overview</button>
+    <button class="tab active" onclick="showTab('insights',this)">Key Insights</button>
+    <button class="tab" onclick="showTab('overview',this)">Pre/Post Overview</button>
     <button class="tab" onclick="showTab('trends',this)">Year-over-Year Trends</button>
     <button class="tab" onclick="showTab('predictors',this)">Outcome Predictors</button>
   </div>
 
+  <!-- ─── KEY INSIGHTS ──────────────────────────── -->
+  <div id="insights" class="section active">
+
+    <!-- Headline Finding -->
+    <div class="card" style="border-left:4px solid #2563eb">
+      <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#2563eb;margin-bottom:8px">Headline Finding</div>
+      <h2 style="font-size:20px;line-height:1.4;margin-bottom:12px">The Personal Empowerment course produces significant, durable gains in emotional intelligence &mdash; and the effect has held steady across five years.</h2>
+      <p style="font-size:14px;color:#475569;line-height:1.7;margin:0">
+        Across 468 matched pre/post pairs from 2021&ndash;2025, PE students gained <strong>+3.9 points on Total EQ</strong> (p&nbsp;&lt;&nbsp;.001, d&nbsp;=&nbsp;0.49), while 394 matched control students showed essentially zero change (+0.3, not significant). Every single competency and every life outcome favored the PE group, all at p&nbsp;&lt;&nbsp;.01 or better. This isn&rsquo;t a one-off result &mdash; PE students outperformed controls in every year of the study.
+      </p>
+    </div>
+
+    <!-- Insight cards -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+
+      <div class="card" style="border-left:4px solid #059669">
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#059669;margin-bottom:6px">Self-Awareness Leads the Way</div>
+        <h2 style="font-size:15px;margin-bottom:8px">The biggest competency gains are in the &ldquo;Know Yourself&rdquo; domain</h2>
+        <p style="font-size:13px;color:#475569;line-height:1.6;margin:0">
+          Emotional Literacy (+6.4), Recognize Patterns (+5.7), and Consequential Thinking (+5.2) show the largest pre-to-post gains. These self-awareness competencies are foundational to the Six Seconds model, and the course clearly excels at building them.
+        </p>
+      </div>
+
+      <div class="card" style="border-left:4px solid #7c3aed">
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#7c3aed;margin-bottom:6px">Protective Effect</div>
+        <h2 style="font-size:15px;margin-bottom:8px">Control students declined on Wellbeing and Quality of Life &mdash; PE students didn&rsquo;t</h2>
+        <p style="font-size:13px;color:#475569;line-height:1.6;margin:0">
+          The control group showed significant declines in Wellbeing (&minus;1.7, p&nbsp;&lt;&nbsp;.001) and Quality of Life (&minus;1.5, p&nbsp;=&nbsp;.003) over the semester &mdash; a pattern consistent with typical college stress. PE students were buffered from this decline, holding steady or improving. The course appears to build resilience, not just skills.
+        </p>
+      </div>
+
+      <div class="card" style="border-left:4px solid #f97316">
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#f97316;margin-bottom:6px">Strategic Opportunity</div>
+        <h2 style="font-size:15px;margin-bottom:8px">The competencies with the biggest gains aren&rsquo;t the strongest predictors of life outcomes</h2>
+        <p style="font-size:13px;color:#475569;line-height:1.6;margin:0">
+          Exercise Optimism, Intrinsic Motivation, and Noble Goals are the strongest predictors of Effectiveness, Relationship, Quality of Life, and Wellbeing in regression analysis &mdash; but the course produces its largest gains in Emotional Literacy and Recognize Patterns. Strengthening the Choose/Give Yourself curriculum components could amplify impact on student wellbeing.
+        </p>
+      </div>
+
+      <div class="card" style="border-left:4px solid #ec4899">
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#ec4899;margin-bottom:6px">The Empathy Puzzle</div>
+        <h2 style="font-size:15px;margin-bottom:8px">Empathy is the one competency that resists growth</h2>
+        <p style="font-size:13px;color:#475569;line-height:1.6;margin:0">
+          PE students gained just +0.7 on Empathy (not significant), while the control group actually declined &minus;1.9 (p&nbsp;&lt;&nbsp;.001). Empathy is also the most volatile competency year to year, and the weakest predictor of most outcomes. Its interpersonal nature may make it harder to develop through coursework alone.
+        </p>
+      </div>
+
+      <div class="card" style="border-left:4px solid #0891b2">
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#0891b2;margin-bottom:6px">Standout Year</div>
+        <h2 style="font-size:15px;margin-bottom:8px">2024 was the strongest year across nearly every measure</h2>
+        <p style="font-size:13px;color:#475569;line-height:1.6;margin:0">
+          Total EQ gained +5.1 (d&nbsp;=&nbsp;0.60) in 2024, with Wellbeing jumping +3.8 (vs. near-zero in prior years). Something about the 2024 cohort or curriculum delivery worked especially well &mdash; worth investigating what was different. Meanwhile, outcome improvements have been trending upward across all five years.
+        </p>
+      </div>
+
+      <div class="card" style="border-left:4px solid #6366f1">
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#6366f1;margin-bottom:6px">Consistency</div>
+        <h2 style="font-size:15px;margin-bottom:8px">Baselines are stable, and the effect doesn&rsquo;t vary by semester</h2>
+        <p style="font-size:13px;color:#475569;line-height:1.6;margin:0">
+          Incoming students&rsquo; pre-test scores haven&rsquo;t meaningfully shifted from 2021&ndash;2025, so the course is working with similar raw material each year. Fall and spring semesters produce nearly identical gains overall, with one exception: Exercise Optimism gains are significantly larger in spring (+4.3 vs. +2.1, p&nbsp;=&nbsp;.03).
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Questions to Explore -->
+    <div class="card" style="margin-top:16px;background:#f8fafc;border:1px dashed #cbd5e1">
+      <h2 style="margin-bottom:12px;color:#475569">Questions &amp; Next Steps</h2>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:13px;color:#475569;line-height:1.6">
+        <div style="padding:10px 14px;background:#fff;border-radius:8px;border:1px solid #e2e8f0">
+          <strong style="color:#0f172a">What was different about 2024?</strong><br>
+          The gains were notably stronger that year. Was there a curriculum change, a different instructor emphasis, or a cohort composition difference that could be replicated?
+        </div>
+        <div style="padding:10px 14px;background:#fff;border-radius:8px;border:1px solid #e2e8f0">
+          <strong style="color:#0f172a">Can Empathy be moved?</strong><br>
+          The one competency that resists growth. Would adding peer-based or experiential activities (like the POP-UP Festival) specifically targeting empathy make a difference?
+        </div>
+        <div style="padding:10px 14px;background:#fff;border-radius:8px;border:1px solid #e2e8f0">
+          <strong style="color:#0f172a">Gender &amp; subgroup effects?</strong><br>
+          With 615 women and 563 men in the PE data, is there a differential effect? Do certain demographic groups benefit more from the course?
+        </div>
+        <div style="padding:10px 14px;background:#fff;border-radius:8px;border:1px solid #e2e8f0">
+          <strong style="color:#0f172a">Brain Profiles &amp; Agility?</strong><br>
+          The dataset includes Brain Profile types and 16 brain talent scores. Do certain profiles gain more from the course? Does Brain Agility change?
+        </div>
+        <div style="padding:10px 14px;background:#fff;border-radius:8px;border:1px solid #e2e8f0">
+          <strong style="color:#0f172a">Faculty/staff cohort?</strong><br>
+          49 faculty/staff completed the PE training across three cohorts. Small sample, but do they show similar patterns to students, or is the adult learner experience different?
+        </div>
+        <div style="padding:10px 14px;background:#fff;border-radius:8px;border:1px solid #e2e8f0">
+          <strong style="color:#0f172a">Connection to the POP-UP Festival?</strong><br>
+          The POP-UP study showed that <em>leading</em> an EQ event amplified Effectiveness. Could combining PE coursework with the POP-UP leadership experience produce compounding effects?
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- ─── OVERVIEW ──────────────────────────────── -->
-  <div id="overview" class="section active">
+  <div id="overview" class="section">
     <div class="card">
       <h2>Pre &rarr; Post Change Scores</h2>
       <p>Mean change in SEI scores (paired pre/post). All PE vs Control differences significant at p &lt; .01 or better.</p>
