@@ -32,8 +32,19 @@ h2{font-size:16px;font-weight:700;margin-bottom:4px}
 .bar-val{width:40px;font-size:12px;font-weight:600;color:#334155;text-align:right;flex-shrink:0}
 .bar-p{width:48px;font-size:11px;color:#64748b;flex-shrink:0}
 svg text{font-family:'Inter',-apple-system,sans-serif}
-.legend{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px;font-size:12px;color:#475569}
+.legend{display:flex;gap:6px 16px;flex-wrap:wrap;margin-bottom:12px;font-size:12px;color:#475569}
 .legend-dot{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:4px;vertical-align:middle}
+.legend-item{cursor:pointer;padding:3px 8px;border-radius:6px;transition:all .15s;user-select:none;border:2px solid transparent}
+.legend-item:hover{background:#f1f5f9}
+.legend-item.active{background:#f0f9ff;border-color:currentColor}
+.legend-item.dimmed{opacity:.25}
+.line-tooltip{position:absolute;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:10px 14px;font-size:12px;box-shadow:0 4px 12px rgba(0,0,0,.1);pointer-events:none;z-index:20;display:none;min-width:180px}
+.line-tooltip .tt-year{font-weight:700;margin-bottom:6px;font-size:13px;color:#0f172a}
+.line-tooltip .tt-row{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.line-tooltip .tt-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+.line-tooltip .tt-label{flex:1;color:#475569}
+.line-tooltip .tt-val{font-weight:600;color:#0f172a}
+.line-tooltip .tt-row.highlighted{background:#f0f9ff;margin:0 -6px;padding:2px 6px;border-radius:4px}
 .insight{margin-top:20px;padding:16px;background:#fffbeb;border-radius:8px;border:1px solid #fde68a}
 .insight-title{font-size:13px;font-weight:600;color:#92400e;margin-bottom:6px}
 .insight-body{font-size:13px;color:#78350f;line-height:1.6}
@@ -201,13 +212,13 @@ svg text{font-family:'Inter',-apple-system,sans-serif}
     </div>
     <div class="card">
       <h2>Competency Gains Over Time (PE Course)</h2>
-      <p>Know Yourself competencies consistently lead. Empathy (dashed) is the most volatile.</p>
+      <p>Know Yourself competencies consistently lead. Click any name in the legend to highlight that line.</p>
       <div id="comp-legend" class="legend" style="font-size:11px"></div>
       <div id="comp-trend-chart" class="chart-container"></div>
     </div>
     <div class="card">
       <h2>Life Outcomes Over Time: PE vs Control</h2>
-      <p>PE students improve while control students decline &mdash; especially Wellbeing. 2024 was a standout.</p>
+      <p>PE students improve while control students decline &mdash; especially Wellbeing. Click a name to highlight; solid = PE, dashed = Control.</p>
       <div id="outcome-legend" class="legend" style="font-size:11px"></div>
       <div id="outcome-trend-chart" class="chart-container"></div>
     </div>
@@ -265,7 +276,7 @@ var YEARLY_EQ = [
 ];
 
 var COMP_KEYS = ["Emot. Literacy","Recog. Patterns","Conseq. Thinking","Nav. Emotions","Intrinsic Motiv.","Exercise Optimism","Empathy","Noble Goals"];
-var COMP_COLORS = ["#6366f1","#8b5cf6","#a855f7","#d946ef","#ec4899","#f43f5e","#f97316","#eab308"];
+var COMP_COLORS = ["#2563eb","#7c3aed","#c026d3","#0891b2","#059669","#dc2626","#ea580c","#ca8a04"];
 var YEARLY_COMP = [
   [2021,6.00,5.74,6.35,3.21,1.37,3.00,2.65,4.41],
   [2022,5.66,6.79,4.07,2.69,2.50,2.27,-0.17,4.65],
@@ -276,13 +287,13 @@ var YEARLY_COMP = [
 
 var OUTCOME_LINES = [
   {key:"pe_eff",label:"PE: Effectiveness",color:"#2563eb",dash:false},
-  {key:"pe_rel",label:"PE: Relationship",color:"#7c3aed",dash:false},
+  {key:"pe_rel",label:"PE: Relationship",color:"#9333ea",dash:false},
   {key:"pe_qol",label:"PE: Quality of Life",color:"#059669",dash:false},
-  {key:"pe_well",label:"PE: Wellbeing",color:"#0891b2",dash:false},
-  {key:"ctrl_eff",label:"Ctrl: Effectiveness",color:"#93c5fd",dash:true},
-  {key:"ctrl_rel",label:"Ctrl: Relationship",color:"#c4b5fd",dash:true},
-  {key:"ctrl_qol",label:"Ctrl: Quality of Life",color:"#86efac",dash:true},
-  {key:"ctrl_well",label:"Ctrl: Wellbeing",color:"#67e8f9",dash:true}
+  {key:"pe_well",label:"PE: Wellbeing",color:"#dc2626",dash:false},
+  {key:"ctrl_eff",label:"Ctrl: Effectiveness",color:"#2563eb",dash:true},
+  {key:"ctrl_rel",label:"Ctrl: Relationship",color:"#9333ea",dash:true},
+  {key:"ctrl_qol",label:"Ctrl: Quality of Life",color:"#059669",dash:true},
+  {key:"ctrl_well",label:"Ctrl: Wellbeing",color:"#dc2626",dash:true}
 ];
 var YEARLY_OUTCOMES = [
   {year:"2021",pe_eff:4.36,pe_rel:2.55,pe_qol:1.79,pe_well:-0.26,ctrl_eff:1.46,ctrl_rel:0.59,ctrl_qol:-0.56,ctrl_well:-1.31},
@@ -368,17 +379,24 @@ function buildEffectBars(container,data){
   el.innerHTML=html;
 }
 
-function svgLineChart(container,datasets,years,yMin,yMax,W,H){
-  var el=document.getElementById(container);
-  var pad={l:45,r:15,t:15,b:30};
+/* Interactive line chart with hover tooltips and highlight state */
+var chartStates={};
+
+function interactiveLineChart(chartId,legendId,datasets,years,yMin,yMax,W,H){
+  var el=document.getElementById(chartId);
+  var state=chartStates[chartId]={highlighted:null,datasets:datasets,years:years};
+  var pad={l:45,r:20,t:15,b:30};
   var cw=W-pad.l-pad.r, ch=H-pad.t-pad.b;
   var xStep=cw/(years.length-1);
   function xPos(i){return pad.l+i*xStep;}
   function yPos(v){return pad.t+ch-(v-yMin)/(yMax-yMin)*ch;}
 
-  var svg='<svg width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;max-width:'+W+'px">';
+  // Build wrapper
+  el.style.position='relative';
+  var tooltipId=chartId+'-tip';
+
+  var svg='<svg id="'+chartId+'-svg" width="'+W+'" height="'+H+'" viewBox="0 0 '+W+' '+H+'" style="width:100%;height:auto;max-width:'+W+'px;cursor:crosshair">';
   // grid
-  var gridSteps=Math.round((yMax-yMin)/2);
   for(var g=yMin;g<=yMax;g+=2){
     var gy=yPos(g);
     svg+='<line x1="'+pad.l+'" y1="'+gy+'" x2="'+(W-pad.r)+'" y2="'+gy+'" stroke="#f1f5f9" stroke-width="1"/>';
@@ -391,18 +409,127 @@ function svgLineChart(container,datasets,years,yMin,yMax,W,H){
   years.forEach(function(yr,i){
     svg+='<text x="'+xPos(i)+'" y="'+(H-6)+'" text-anchor="middle" fill="#64748b" font-size="12">'+yr+'</text>';
   });
-  // lines
-  datasets.forEach(function(ds){
+  // lines + dots (each line gets a group with a class for highlight control)
+  datasets.forEach(function(ds,di){
+    var opacity=1;
+    var sw=ds.dash?2:2.5;
+    svg+='<g class="line-group" data-idx="'+di+'" style="transition:opacity .2s">';
     var pts=[];
     ds.values.forEach(function(v,i){if(v!==null)pts.push(xPos(i)+","+yPos(v));});
-    var dashAttr=ds.dash?' stroke-dasharray="6 4"':'';
-    svg+='<polyline points="'+pts.join(" ")+'" fill="none" stroke="'+ds.color+'" stroke-width="'+(ds.dash?1.5:2)+'"'+dashAttr+'/>';
+    var dashAttr=ds.dash?' stroke-dasharray="8 5"':'';
+    svg+='<polyline points="'+pts.join(" ")+'" fill="none" stroke="'+ds.color+'" stroke-width="'+sw+'"'+dashAttr+' stroke-linecap="round" stroke-linejoin="round"/>';
     ds.values.forEach(function(v,i){
-      if(v!==null) svg+='<circle cx="'+xPos(i)+'" cy="'+yPos(v)+'" r="3.5" fill="'+ds.color+'" stroke="#fff" stroke-width="1.5"/>';
+      if(v!==null) svg+='<circle cx="'+xPos(i)+'" cy="'+yPos(v)+'" r="4" fill="'+ds.color+'" stroke="#fff" stroke-width="2" class="dot" data-ds="'+di+'" data-yi="'+i+'"/>';
     });
+    svg+='</g>';
+  });
+  // Vertical hover zones (invisible rects for each year column)
+  svg+='<line id="'+chartId+'-vline" x1="0" y1="'+pad.t+'" x2="0" y2="'+(H-pad.b)+'" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 3" style="display:none"/>';
+  years.forEach(function(yr,i){
+    var x1=i===0?pad.l:xPos(i)-xStep/2;
+    var x2=i===years.length-1?(W-pad.r):xPos(i)+xStep/2;
+    svg+='<rect x="'+x1+'" y="'+pad.t+'" width="'+(x2-x1)+'" height="'+ch+'" fill="transparent" data-yi="'+i+'" class="hover-zone"/>';
   });
   svg+='</svg>';
+  svg+='<div id="'+tooltipId+'" class="line-tooltip"></div>';
   el.innerHTML=svg;
+
+  // Store layout for event handlers
+  state.xPos=xPos; state.yPos=yPos; state.pad=pad; state.W=W; state.H=H;
+
+  // Hover events
+  var svgEl=document.getElementById(chartId+'-svg');
+  var tip=document.getElementById(tooltipId);
+  var vline=document.getElementById(chartId+'-vline');
+
+  svgEl.addEventListener('mousemove',function(e){
+    var rect=svgEl.getBoundingClientRect();
+    var scaleX=W/rect.width;
+    var mx=(e.clientX-rect.left)*scaleX;
+    // find nearest year
+    var bestI=0, bestDist=Infinity;
+    years.forEach(function(yr,i){
+      var d=Math.abs(mx-xPos(i));
+      if(d<bestDist){bestDist=d;bestI=i;}
+    });
+    if(mx<pad.l-10||mx>W-pad.r+10){tip.style.display='none';vline.style.display='none';return;}
+    // show vertical line
+    vline.setAttribute('x1',xPos(bestI));
+    vline.setAttribute('x2',xPos(bestI));
+    vline.style.display='';
+    // build tooltip
+    var html='<div class="tt-year">'+years[bestI]+'</div>';
+    datasets.forEach(function(ds,di){
+      var v=ds.values[bestI];
+      if(v===null||v===undefined)return;
+      var isHi=state.highlighted===di;
+      var cls=state.highlighted!==null&&isHi?'tt-row highlighted':'tt-row';
+      html+='<div class="'+cls+'"><span class="tt-dot" style="background:'+ds.color+(ds.dash?';border:1px dashed #fff':'')+'"></span>';
+      html+='<span class="tt-label">'+ds.label+'</span>';
+      html+='<span class="tt-val">'+(v>0?'+':'')+v.toFixed(2)+'</span></div>';
+    });
+    tip.innerHTML=html;
+    tip.style.display='block';
+    // position tooltip
+    var tipRect=tip.getBoundingClientRect();
+    var svgRect=el.getBoundingClientRect();
+    var left=(xPos(bestI)/W)*rect.width+8;
+    if(left+tipRect.width>rect.width-10) left=left-tipRect.width-16;
+    var top=e.clientY-svgRect.top-tipRect.height/2;
+    top=Math.max(0,Math.min(top,rect.height-tipRect.height));
+    tip.style.left=left+'px';
+    tip.style.top=top+'px';
+  });
+
+  svgEl.addEventListener('mouseleave',function(){
+    tip.style.display='none';
+    vline.style.display='none';
+  });
+
+  // Build clickable legend
+  buildClickableLegend(chartId,legendId,datasets);
+}
+
+function buildClickableLegend(chartId,legendId,datasets){
+  var el=document.getElementById(legendId);
+  var html='';
+  datasets.forEach(function(ds,i){
+    var dashStyle=ds.dash?'border-bottom:2px dashed '+ds.color:'';
+    html+='<span class="legend-item" data-chart="'+chartId+'" data-idx="'+i+'" style="color:'+ds.color+'" onclick="toggleHighlight(\''+chartId+'\','+i+')">';
+    html+='<span class="legend-dot" style="background:'+ds.color+';'+dashStyle+'"></span>'+ds.label+'</span>';
+  });
+  el.innerHTML=html;
+}
+
+function toggleHighlight(chartId,idx){
+  var state=chartStates[chartId];
+  var svgEl=document.getElementById(chartId+'-svg');
+  var groups=svgEl.querySelectorAll('.line-group');
+  var legendItems=document.querySelectorAll('.legend-item[data-chart="'+chartId+'"]');
+
+  if(state.highlighted===idx){
+    // Deselect — show all
+    state.highlighted=null;
+    groups.forEach(function(g){g.style.opacity='1';g.querySelector('polyline').style.strokeWidth=g.querySelector('polyline').getAttribute('stroke-width')||'2.5';});
+    legendItems.forEach(function(li){li.classList.remove('active','dimmed');});
+  } else {
+    // Highlight one
+    state.highlighted=idx;
+    groups.forEach(function(g,i){
+      if(i===idx){
+        g.style.opacity='1';
+        g.querySelector('polyline').style.strokeWidth='4';
+      } else {
+        g.style.opacity='0.12';
+        g.querySelector('polyline').style.strokeWidth='1.5';
+      }
+    });
+    legendItems.forEach(function(li,i){
+      li.classList.remove('active','dimmed');
+      if(i===idx) li.classList.add('active');
+      else li.classList.add('dimmed');
+    });
+  }
 }
 
 function svgGroupedBarChart(container,data,keyA,keyB,colorA,colorB,W,H,yMin,yMax){
@@ -492,28 +619,17 @@ function renderAll(){
   // Trends: EQ by year
   svgGroupedBarChart('yearly-eq-chart',YEARLY_EQ,'pe','ctrl','#2563eb','#94a3b8',800,280,-2,6);
 
-  // Trends: Competency lines
-  var compLeg=document.getElementById('comp-legend');
-  compLeg.innerHTML=COMP_KEYS.map(function(k,i){
-    var style=k==="Empathy"?"border-bottom:2px dashed "+COMP_COLORS[i]:"";
-    return '<span><span class="legend-dot" style="background:'+COMP_COLORS[i]+';'+style+'"></span>'+k+'</span>';
-  }).join("");
-
+  // Trends: Competency lines (interactive)
   var compDS=COMP_KEYS.map(function(k,ki){
-    return {label:k,color:COMP_COLORS[ki],dash:k==="Empathy",values:YEARLY_COMP.map(function(row){return row[ki+1];})};
+    return {label:k,color:COMP_COLORS[ki],dash:false,values:YEARLY_COMP.map(function(row){return row[ki+1];})};
   });
-  svgLineChart('comp-trend-chart',compDS,YEARLY_COMP.map(function(r){return r[0];}),-4,9,800,340);
+  interactiveLineChart('comp-trend-chart','comp-legend',compDS,YEARLY_COMP.map(function(r){return r[0];}),-4,9,880,360);
 
-  // Trends: Outcome lines
-  var outLeg=document.getElementById('outcome-legend');
-  outLeg.innerHTML=OUTCOME_LINES.map(function(l){
-    return '<span><span class="legend-dot" style="background:'+l.color+(l.dash?';opacity:.7':'')+'"></span>'+l.label+'</span>';
-  }).join("");
-
+  // Trends: Outcome lines (interactive)
   var outDS=OUTCOME_LINES.map(function(l){
     return {label:l.label,color:l.color,dash:l.dash,values:YEARLY_OUTCOMES.map(function(d){return d[l.key];})};
   });
-  svgLineChart('outcome-trend-chart',outDS,YEARLY_OUTCOMES.map(function(d){return d.year;}),-4,7,800,300);
+  interactiveLineChart('outcome-trend-chart','outcome-legend',outDS,YEARLY_OUTCOMES.map(function(d){return d.year;}),-4,7,880,320);
 
   // Predictors
   renderRegression();
